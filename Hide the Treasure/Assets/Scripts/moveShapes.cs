@@ -5,40 +5,50 @@ using UnityEngine;
 public class moveShapes : MonoBehaviour
 {
     GameObject[] planks;
-    // Start is called before the first frame update
-    void Start()
-    {
-        planks = GameObject.FindGameObjectsWithTag("plank");
-        float y = 100.0f;
+	private bool isHeld;
+	
+	void Awake()
+	{
+		planks = GameObject.FindGameObjectsWithTag("Plank");
         for (int i = 0; i < planks.Length; i++)
         {
             Debug.Log(planks[i]);
-            Instantiate(planks[i], new Vector3(100.0f, y, 0.0f), Quaternion.identity);
-            y += 10.0f;
         }
-        // Load 3 figures in slot-machine 
-    }
-    // Implement Drag and Drop
-    private void OnMouseDown()
+		// TODO: 
+		// 1. Create slot machine graphics and sprite container. 
+		// 2. Load 3 randomized(shape and area) figures in slot-machine. 
+	}
+	
+    // Start is called before the first frame update
+    void Start()
     {
-        // Mouse pressed
-        // Highlight plank -> Free translation
-        // Rotation -> Give 4 points(rot-points) on plank for rotation (360 deg)
-        // if rot-point selected:
-        //    Only rotate (preserve state)
+		isHeld = false;
     }
-
-    private void OnMouseUp()
-    {
-        // Mouse released
-        // When released on floor -> stay (border&lighting effect)
-        // go back to initial slot position if not placed on floor. 
-    }
-
+	
+	private void onMouseUp()
+	{
+		isHeld = false;
+	}
+	
+	private void onMouseDown()
+	{
+		isHeld = true;
+	}
+	
     // Update is called once per frame
     void Update()
     {
-        // if planks[i] on floor -> create new
-        // How to create only one object?
+		if(isHeld)
+		{	
+			Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+            transform.Translate(mousePosition);
+			
+			// TODO: Rotation buggy!!! -> Flies off to infinity
+			
+			//float targetAngle = Vector2.SignedAngle(Vector2.right, direction);
+			//angle = Mathf.SmoothDampAngle(angle, targetAngle, ref currentVelocity, smoothTime, maxTurnSpeed);
+			//transform.eulerAngles = new Vector3(0, 0, angle);
+		}
     }
+
 }
