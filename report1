@@ -122,3 +122,128 @@ We give 2 power ups per level at random times to increase the fun factor and ent
 \section*{References}
 \end{multicols}
 \end{document}
+=======
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{multicol}
+\usepackage{amsmath}
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=20mm,
+ top=20mm,
+ }
+
+\title{\textbf{Hide The Treasure}\\ \emph{CS451 Game Project}}
+\author{Aryan Garg and Anukool Dwivedi}
+\date{7, September 2021}
+
+
+\begin{document}
+
+\maketitle
+
+
+\begin{abstract}
+This game is an outcome of the course CS451: Graphics and Game Design. Thanks to professor Jinesh Machchhar and our teaching assistant Mr. Rushiraj Jalawe for this opportunity. We have attempted to apply basic concepts of Linear Transformations, Rigid Bodies, Graphic Designing and 2D Game Development to make a jigsaw puzzle type game; only that the concept is to hide the treasure with wooden shapes(can overlap) from the thieves. The mathematical concept is on the maximisation of the covered area with the minimal number of tiles. Different shapes are provided to the player endlessly with all the rigid transformations allowed on every shape before placing it on top of the treasure. Scoring and winning is based on the cardinality of the player's chosen set of shapes. To make the game interesting, we have added two types of power-ups as well.   
+\end{abstract}
+\begin{multicols}{2}
+\section*{Problem Statement}
+\begin{flushleft}
+A bounded 2D region $D$ is said to be covered by a set of 2D items $I$ if $D$
+is a subset of the union of all the items in $I$. In other words, each point
+of $D$ is contained in the union of the items in $I$. The union of two 2D
+shapes is simply the union of the points of the two shapes. Here, the unique
+shapes of the items of $I$ are fixed, however, there is an unlimited supply.
+Also, $D$ is given. The objective before the player is to use as few shapes
+from $I$ as possible, and arrange them so as to cover $D$. While arranging an
+item of I, the player must be allowed all rigid motions in 2D. No other transformation may be permitted.\\
+\end{flushleft}
+
+
+
+\section*{Terminology}
+\begin{itemize}
+    \item D: 2 Dimensional region (Floor).
+    \item I: Set of infinite available shapes.
+    \item P: Set of selected shapes by player.
+    \item $|$P$|$: Cardinality of P.
+    \item $\lambda$: Area covered at any stage of game.
+    \item SF: Size of floor.
+    \item $\gamma$: Max size of any shape.
+    \item $\kappa$: Threshold to proceed to next level.
+    \item $A$: Different type of shapes. 
+    
+\end{itemize}
+
+\section*{Specifications}
+
+\subsection*{Floor and Shapes}
+\begin{itemize}
+    \item \textbf{What is the Floor?} The main floor(board) is a fixed platform on which the shapes can be placed. It's size is defined as it's area or the points in the convex hull of D. 
+       \begin{equation} \label{sizeEquation}
+           SF = Size(F) = Area(F)
+       \end{equation}
+    \item \textbf{What kind of shapes can be placed?} Basic shape types include square, triangle and hexagon. The shapes come in sizes less than or equal to the threshold $\gamma$ defined as follows: 
+    \begin{equation} \label{shapeSizeThreshold}
+        \gamma = \frac{SF}{3}
+    \end{equation}
+    \begin{equation}
+        Size(Shape \in I) \leq \gamma 
+    \end{equation}
+    \item \textbf{What can we do with the shapes?} Only rotations are allowed for all the shapes and they can be dropped on the floor. Rotation(ACW) can be defined by the linear operator $R: V -> V$:
+    \begin{equation} \label{rotationMatrix}
+    R = 
+        \begin{bmatrix}
+        \cos{\theta} & -\sin{\theta} \\
+        \sin{\theta} & \cos{\theta}
+        \end{bmatrix} \\
+    \end{equation}
+    where $\theta$ is the angle of rotation
+\end{itemize}
+
+
+\subsection*{Scoring and Levels}
+\begin{itemize}
+    \item \textbf{Score $\sigma$} is based on the area of floor covered till now denoted by $\lambda$, number of shapes used denoted by $|P|$ %----and also priority scores could be given to different shapes such as a triangle shape tile would have more priority as compared to squares because it is difficult to cover the floor with triangular shapes as compared to the square shaped tiles.---%
+    \begin{equation}
+        \sigma = 1000 \times \lambda \times e^{-|P|}
+    \end{equation}
+    \item \textbf{Levels}, the basic or starting levels would involve smaller floors and the shapes are provided in such a way that it would be easier to figure out. However, as the levels increase, then the floor size increases and more combinations become possible making the level harder. 
+    \item \textbf{Advancing to the next level:} Purely dependent on score and threshold parameter $\kappa$ which increases by $10\%$ after every level.
+    \begin{equation}
+        \kappa_{r+1}= 1.1 \times \kappa_r
+    \end{equation}
+    where r is the current level.
+\end{itemize}
+
+
+\subsection*{Power-Ups}
+We give 2 power ups per level at random times to increase the fun factor and entropy which is the ultimate truth of this universe.
+\begin{enumerate}
+    \item \textbf{Loot:} You can loot a section of the treasure (which will appear as a 'magical disappearing' effect) which is limited by $\gamma$ as follows:
+    \begin{equation}
+        Size(Loot-Shape) \leq 0.75 \times \gamma
+    \end{equation}
+    \item \textbf{God Mode:} We offer the player a catalog of shapes from the set $A$ and then the player can choose the size of the selected shape limited by $\gamma$.
+\end{enumerate}
+\textbf{Since, God mode is about being god, it is going to be rarer and will appear with a probability of 5\%}
+
+
+\section*{Implementation and Flow Details}
+
+\section*{Timeline}
+\begin{enumerate}
+    \item \emph{8th Sept:} Report Submission
+    \item \emph{15th Sept:} Unity set up, background(Floor) and Develop Images
+    \item \emph{30th Sept:} Building randomized set $I$,  Overlay and Scoring Mechanism (Console), Main Game Logic(Leveling Up)
+    \item \emph{15th Oct:} Main Game Logic, Shape Transformation Mechanism, Power Ups
+    \item \emph{30th Oct:} Final Touch Up and First Deployment.
+    \item \emph{10th Nov:} Recommended changes \& additional suggestions by TAs/professor
+\end{enumerate}
+
+\section*{References}
+\end{multicols}
+\end{document}
